@@ -11,7 +11,7 @@ app.get("/", (_, res) => res.json({ success: true }));
 app.get("/convert", async (req, res) => {
 	const { url } = req.query;
 
-	let outputFilePath = path.join(process.cwd(), `/tmp/${Date.now()}.mp3`);
+	let outputFilePath = `/tmp/${Date.now()}.mp3`;
 	let decodedUrl = decode(url);
 
 	await convert(decodedUrl, outputFilePath);
