@@ -17,6 +17,7 @@
 		"express": "^4.18.3",
 		"fluent-ffmpeg": "^2.1.2",
 		"url-encode-decode": "^1.0.0",
+		"youtube-dl-exec": "^2.5.7",
 		"ytdl-core": "^4.11.5"
 	}
 }
