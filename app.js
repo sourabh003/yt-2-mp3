@@ -4,6 +4,13 @@ const app = express();
 const { decode } = require("url-encode-decode");
 const fs = require("fs");
 const convert = require("./convert");
+const cors = require("cors");
+
+app.use(
+	cors({
+		origin: "*",
+	})
+);
 
 app.get("/", (_, res) => res.json({ success: true }));
 

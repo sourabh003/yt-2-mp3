@@ -1,34 +1,23 @@
-const youtubedl = require("youtube-dl-exec");
+const ytdl = require("ytdl-core");
 const ffmpeg = require("fluent-ffmpeg");
-const fs = require("fs");
+
+ffmpeg.setFfmpegPath("C:/Program Files/ffmpeg/bin/ffmpeg");
 
 module.exports = async (videoUrl, outputFilePath) => {
 	try {
-		// Download the video using youtube-dl-exec
-		await youtubedl(videoUrl, { o: outputFilePath, f: "bestaudio[ext=m4a]" });
+		const videoStream = ytdl(videoUrl, { filter: "audioonly" });
 
-		// Convert the downloaded video to MP3 using ffmpeg
-		await new Promise((resolve, reject) => {
+		return new Promise((resolve, reject) => {
 			ffmpeg()
-				.input(outputFilePath)
+				.input(videoStream)
 				.audioCodec("libmp3lame")
 				.audioBitrate(320)
 				.save(outputFilePath)
 				.on("end", () => {
-					console.log("Conversion finished.");
-					// Optionally, delete the original downloaded file
-					fs.unlink(outputFilePath, (err) => {
-						if (err) {
-							console.error("Error deleting file:", err);
-						} else {
-							console.log("Original file deleted successfully.");
-						}
-						resolve();
-					});
+					resolve();
 				})
-				.on("error", (err) => {
-					console.error("Error during conversion:", err);
-					reject(err);
+				.on("error", (error) => {
+					reject(error);
 				});
 		});
 	} catch (err) {
